@@ -1,0 +1,20 @@
+# Java compiled files
+*.class
+
+# Common Java build output folders
+out/
+bin/
+build/
+
+# Local datasets
+dataset_p/
+dataset_g/
+
+# IDE/editor files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+Thumbs.db
+Desktop.ini
