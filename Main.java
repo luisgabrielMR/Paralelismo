@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -33,14 +34,58 @@ public class Main {
         String option = scanner.nextLine().trim();
 
         if (option.equals("1")) {
-            return new DatasetOption("Pequeno", Paths.get(DATASET_PEQUENO_PATH));
+            return new DatasetOption("Pequeno", resolveDatasetPath(DATASET_PEQUENO_PATH));
         }
 
         if (option.equals("2")) {
-            return new DatasetOption("Grande", Paths.get(DATASET_GRANDE_PATH));
+            return new DatasetOption("Grande", resolveDatasetPath(DATASET_GRANDE_PATH));
         }
 
         throw new IllegalArgumentException("Opcao de dataset invalida.");
+    }
+
+    private static Path resolveDatasetPath(String datasetPath) {
+        Path directPath = Paths.get(datasetPath);
+
+        if (directPath.isAbsolute() || Files.exists(directPath)) {
+            return directPath;
+        }
+
+        Path classDirectory = getClassDirectory();
+
+        if (classDirectory != null) {
+            Path pathNextToClasses = classDirectory.resolve(datasetPath);
+
+            if (Files.exists(pathNextToClasses)) {
+                return pathNextToClasses;
+            }
+
+            Path projectDirectory = classDirectory.getParent();
+
+            if (projectDirectory != null) {
+                Path pathNextToOutputDirectory = projectDirectory.resolve(datasetPath);
+
+                if (Files.exists(pathNextToOutputDirectory)) {
+                    return pathNextToOutputDirectory;
+                }
+            }
+        }
+
+        return directPath;
+    }
+
+    private static Path getClassDirectory() {
+        try {
+            Path location = Paths.get(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+
+            if (Files.isRegularFile(location)) {
+                return location.getParent();
+            }
+
+            return location;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private static String readTargetName(Scanner scanner) {
@@ -59,6 +104,9 @@ public class Main {
         System.out.println();
         System.out.println("=== Escolha a Estrategia de Busca ===");
         System.out.println("1 - Sequencial");
+        System.out.println("2 - Sequencial em uma Thread");
+        System.out.println("3 - Uma Thread por arquivo");
+        System.out.println("4 - N Threads por arquivo");
         System.out.print("Opcao: ");
 
         String option = scanner.nextLine().trim();
@@ -67,7 +115,37 @@ public class Main {
             return new SequentialSearch();
         }
 
+        if (option.equals("2")) {
+            return new SingleThreadSearch();
+        }
+
+        if (option.equals("3")) {
+            return new OneThreadPerFileSearch();
+        }
+
+        if (option.equals("4")) {
+            int threadsPerFile = readThreadsPerFile(scanner);
+            return new MultiThreadPerFileSearch(threadsPerFile);
+        }
+
         throw new IllegalArgumentException("Opcao de estrategia invalida.");
+    }
+
+    private static int readThreadsPerFile(Scanner scanner) {
+        System.out.print("Quantas Threads por arquivo deseja usar? ");
+        String input = scanner.nextLine().trim();
+
+        try {
+            int threadsPerFile = Integer.parseInt(input);
+
+            if (threadsPerFile < 1) {
+                throw new IllegalArgumentException("A quantidade de Threads por arquivo deve ser maior que zero.");
+            }
+
+            return threadsPerFile;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("A quantidade de Threads por arquivo deve ser um numero inteiro.");
+        }
     }
 
     private static void printResult(

@@ -12,13 +12,22 @@ SearchStrategy.java
 SearchResult.java
 DatasetUtils.java
 SequentialSearch.java
+SingleThreadSearch.java
+OneThreadPerFileSearch.java
+MultiThreadPerFileSearch.java
 dataset_p/
 dataset_g/
 ```
 
 ## Como compilar
 
-Opcao recomendada, gerando os `.class` fora da raiz:
+Opcao simples:
+
+```bash
+javac *.java
+```
+
+Opcao alternativa, gerando os `.class` fora da raiz:
 
 ```bash
 javac -d out *.java
@@ -26,16 +35,30 @@ javac -d out *.java
 
 ## Como executar
 
+Se compilou com `javac *.java`:
+
+```bash
+java Main
+```
+
+Se compilou com `javac -d out *.java`:
+
 ```bash
 java -cp out Main
 ```
 
-Tambem e possivel compilar diretamente na raiz:
+Ou, se entrar na pasta `out`:
 
 ```bash
-javac *.java
 java Main
 ```
+
+## Estrategias
+
+1 - Sequencial
+2 - Sequencial em uma Thread
+3 - Uma Thread por arquivo
+4 - N Threads por arquivo
 
 ## Observacao
 
