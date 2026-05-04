@@ -36,7 +36,7 @@ public class MultiThreadPerFileSearch implements SearchStrategy {
 
                 List<String> lines = readAllLines(file);
                 List<Future<?>> futures = submitBlockTasks(executor, file, lines, targetName, foundFlag, resultRef);
-                waitForTasks(futures);
+                waitForTasks(futures, foundFlag);
             }
 
             return resultRef.get();
@@ -107,8 +107,32 @@ public class MultiThreadPerFileSearch implements SearchStrategy {
         }
     }
 
-    private void waitForTasks(List<Future<?>> futures) throws IOException {
+    private void waitForTasks(List<Future<?>> futures, AtomicBoolean foundFlag) throws IOException {
         for (Future<?> future : futures) {
+            if (foundFlag.get()) {
+                cancelPendingTasks(futures);
+                break;
+            }
+
+            if (future.isDone()) {
+                try {
+                    future.get();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    cancelPendingTasks(futures);
+                    throw new IOException("A busca foi interrompida.", e);
+                } catch (ExecutionException e) {
+                    cancelPendingTasks(futures);
+                    throw new IOException("Erro durante a busca: " + e.getCause().getMessage(), e.getCause());
+                }
+
+                continue;
+            }
+
+            if (future.isCancelled()) {
+                continue;
+            }
+
             try {
                 future.get();
             } catch (InterruptedException e) {
@@ -118,6 +142,10 @@ public class MultiThreadPerFileSearch implements SearchStrategy {
             } catch (ExecutionException e) {
                 cancelPendingTasks(futures);
                 throw new IOException("Erro durante a busca: " + e.getCause().getMessage(), e.getCause());
+            }
+
+            if (foundFlag.get()) {
+                cancelPendingTasks(futures);
             }
         }
 
