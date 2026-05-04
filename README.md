@@ -274,10 +274,102 @@ O futuro script Python podera sortear nomes, repetir buscas, testar todas as est
 
 Nesta etapa, o Java apenas fornece resultados confiaveis e estruturados para essa automacao futura.
 
+## Benchmark com Python
+
+O arquivo `benchmark.py` automatiza a execucao dos testes usando o modo benchmark do Java.
+
+Ele permite escolher apenas o dataset no terminal:
+
+```bash
+python benchmark.py
+```
+
+Depois da escolha, o script:
+
+- sorteia 5 nomes diferentes que existem no dataset escolhido;
+- executa 5 repeticoes para cada nome;
+- testa 6 configuracoes de estrategia;
+- chama o Java por `subprocess.run`;
+- coleta o JSON retornado pelo Java;
+- salva os dados brutos em JSON e CSV;
+- gera medias por nome;
+- gera medias gerais por estrategia;
+- calcula Speedup usando a media da estrategia `sequencial` como base.
+
+As configuracoes testadas sao:
+
+```text
+sequencial
+singleThread
+oneThreadPerFile
+multiThreadPerFile N=2
+multiThreadPerFile N=4
+multiThreadPerFile N=8
+```
+
+O experimento padrao executa:
+
+```text
+5 nomes x 5 repeticoes x 6 configuracoes = 150 execucoes
+```
+
+O tempo oficial do benchmark vem do Java, pelos campos `wallTimeMs` e `wallTimeNs`. O Python nao mede o tempo da busca; ele apenas organiza as execucoes e consolida os resultados.
+
+### Arquivos Gerados
+
+Cada execucao cria uma pasta dentro de `results/` com data, hora e nome da maquina:
+
+```text
+results/
+  DATA_HORA_MAQUINA/
+    resultados_brutos.json
+    resultados_brutos.csv
+    medias_por_nome.csv
+    medias_gerais.csv
+    speedup.csv
+    resumo_benchmark.json
+```
+
+Descricao dos arquivos:
+
+| Arquivo | Conteudo |
+| --- | --- |
+| `resultados_brutos.json` | Metadados do benchmark, nomes sorteados e lista completa das execucoes com o JSON integral retornado pelo Java. |
+| `resultados_brutos.csv` | Uma linha por execucao, com os campos principais extraidos para Excel/LibreOffice. |
+| `medias_por_nome.csv` | Media, menor e maior tempo agrupados por nome e estrategia. |
+| `medias_gerais.csv` | Media, menor e maior tempo agrupados por estrategia. |
+| `speedup.csv` | Speedup calculado com base na media geral da estrategia sequencial. |
+| `resumo_benchmark.json` | Resumo da execucao, total de sucessos/erros, melhor estrategia e maior Speedup. |
+
+Os arquivos gerados podem ser compartilhados entre integrantes do grupo para comparacao posterior entre maquinas. Essa comparacao entre maquinas e a geracao de graficos ainda nao sao feitas nesta etapa.
+
+### Configuracoes do Script
+
+No topo de `benchmark.py` existem constantes faceis de alterar:
+
+```python
+DATASET_PEQUENO_PATH = "dataset_p"
+DATASET_GRANDE_PATH = "dataset_g"
+
+JAVA_COMMAND = "java"
+JAVAC_COMMAND = "javac"
+JAVA_MAIN_CLASS = "Main"
+
+NOMES_ALEATORIOS = 5
+REPETICOES_POR_ESTRATEGIA = 5
+MULTI_THREAD_VALUES = [2, 4, 8]
+
+COMPILE_BEFORE_RUN = True
+RESULTS_DIR = "results"
+```
+
+Se `COMPILE_BEFORE_RUN` estiver como `True`, o script tenta compilar os arquivos `.java` antes de iniciar as 150 execucoes. No Windows, o Python lista os arquivos `.java` com `pathlib`, porque o `subprocess.run` nao expande `*.java` automaticamente.
+
 ## Estrutura
 
 ```text
 Main.java
+benchmark.py
 CliArguments.java
 BenchmarkMetrics.java
 BenchmarkRunResult.java
