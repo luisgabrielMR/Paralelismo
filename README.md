@@ -1,287 +1,84 @@
-# Busca de Nomes em Arquivos `.txt` com Estrategias Sequenciais e Paralelas
+# Busca de Nomes em Arquivos `.txt`
 
-Esta e uma versao um pouco melhor do projeto desenvolvido em **Java puro** para a disciplina de **Programacao Paralela e Distribuida**.
+Projeto em **Java puro** com apoio de **Python** para comparar estrategias sequenciais e paralelas de busca de nomes em arquivos `.txt`.
 
-O objetivo e buscar um **nome completo** dentro de arquivos `.txt`, comparando diferentes estrategias de execucao:
+O Java executa a busca e mede o tempo oficial. O Python automatiza as repeticoes, coleta os JSONs retornados pelo Java, gera CSVs e cria um relatorio HTML com tabelas e graficos SVG.
 
-- busca sequencial;
-- busca sequencial executada dentro de uma Thread;
-- busca paralela com uma Thread por arquivo;
-- busca paralela com N Threads por arquivo.
-
-A ideia central e analisar se o uso de Threads melhora o tempo de busca e, posteriormente, calcular a metrica de **Speedup** entre a versao sequencial e as versoes paralelas.
-
----
-
-## Ideia Geral
-
-O programa trabalha com dois datasets:
+## Estrutura do projeto
 
 ```text
-dataset_p/  -> Dataset pequeno
-dataset_g/  -> Dataset grande
+PARALELISMO/
+├── src/
+│   ├── Main.java
+│   ├── SearchStrategy.java
+│   ├── SearchResult.java
+│   ├── DatasetUtils.java
+│   ├── SequentialSearch.java
+│   ├── SingleThreadSearch.java
+│   ├── OneThreadPerFileSearch.java
+│   ├── MultiThreadPerFileSearch.java
+│   ├── BenchmarkFormatter.java
+│   ├── BenchmarkMetrics.java
+│   ├── BenchmarkRunResult.java
+│   └── CliArguments.java
+├── scripts/
+│   ├── benchmark.py
+│   └── generate_report.py
+├── dataset_p/
+├── dataset_g/
+├── out/
+├── results/
+├── README.md
+├── .gitignore
+└── LICENSE
 ```
 
-Cada arquivo `.txt` contem nomes completos, seguindo estas regras:
+As classes Java continuam no **default package** para simplificar a compilacao.
 
-- cada linha possui exatamente um nome completo;
-- cada nome e formado por nome + sobrenome;
-- todos os nomes sao unicos;
-- a busca deve encontrar no maximo uma ocorrencia.
+## Regras da busca
 
-Exemplo de arquivo:
-
-```text
-Ana Silva
-Joao Oliveira
-Pedro Santos
-Maria Souza
-```
-
-Ao encontrar o nome pesquisado, o programa informa:
-
-- dataset utilizado;
-- estrategia de busca utilizada;
-- nome pesquisado;
-- se o nome foi encontrado;
-- arquivo onde o nome esta;
-- numero da linha;
-- conteudo da linha;
-- tempo de execucao.
-
-## Regras da Busca
-
-A busca e feita comparando a linha inteira com o nome pesquisado.
-Ou seja, o programa nao procura pedacos do texto.
-
-A comparacao usada e:
+Cada arquivo `.txt` possui um nome completo por linha. A busca compara a linha inteira com o nome pesquisado:
 
 ```java
-linha.trim().equalsIgnoreCase(nomeBuscado.trim())
+line.trim().equalsIgnoreCase(targetName.trim())
 ```
 
-Isso significa que:
+O projeto nao usa `contains`, porque a busca nao deve encontrar apenas parte do nome.
 
-- diferencas entre maiusculas e minusculas sao ignoradas;
-- espacos extras no inicio ou no fim da linha sao ignorados;
-- o nome precisa bater com a linha completa.
+## Estrategias
 
-Por exemplo, se o nome buscado for:
+| Estrategia | Argumento | Classe |
+| --- | --- | --- |
+| Sequencial pura | `sequencial` | `SequentialSearch.java` |
+| Sequencial dentro de uma Thread | `singleThread` | `SingleThreadSearch.java` |
+| Uma Thread por arquivo | `oneThreadPerFile` | `OneThreadPerFileSearch.java` |
+| N Threads por arquivo | `multiThreadPerFile` | `MultiThreadPerFileSearch.java` |
 
-```text
-Ana Silva
-```
+## Como compilar manualmente
 
-O programa aceita:
-
-```text
-Ana Silva
-```
-
-Mas nao aceita:
-
-```text
-Mariana Silva
-Ana Silva Santos
-```
-
-## Estrategias Implementadas
-
-O projeto foi organizado para que cada estrategia de busca seja uma classe separada.
-
-### 1. Busca Sequencial
-
-Classe:
-
-```text
-SequentialSearch.java
-```
-
-Essa e a versao base do projeto. Ela percorre os arquivos um por um e, dentro de cada arquivo, le linha por linha ate encontrar o nome.
-
-Importante:
-
-- nao usa Thread;
-- nao usa paralelismo;
-- serve como referencia para comparar as outras estrategias.
-
-### 2. Busca Sequencial em uma Thread
-
-Classe:
-
-```text
-SingleThreadSearch.java
-```
-
-Essa estrategia executa a mesma logica da busca sequencial, mas dentro de uma unica Thread.
-
-Ela e util para observar se existe diferenca pratica entre executar a busca diretamente no fluxo principal do programa ou dentro de uma Thread separada.
-
-### 3. Uma Thread por Arquivo
-
-Classe:
-
-```text
-OneThreadPerFileSearch.java
-```
-
-Essa estrategia cria uma tarefa para cada arquivo `.txt`.
-
-Exemplo:
-
-```text
-Arquivo 1 -> Thread 1
-Arquivo 2 -> Thread 2
-Arquivo 3 -> Thread 3
-```
-
-Cada Thread busca o nome em um arquivo diferente.
-Quando uma Thread encontra o nome, o programa sinaliza para as demais pararem o quanto antes.
-
-### 4. N Threads por Arquivo
-
-Classe:
-
-```text
-MultiThreadPerFileSearch.java
-```
-
-Essa estrategia permite escolher quantas Threads serao usadas por arquivo.
-
-Exemplo com um arquivo de 2.000 linhas e 2 Threads:
-
-```text
-Thread 1 -> linhas 1 ate 1000
-Thread 2 -> linhas 1001 ate 2000
-```
-
-Exemplo com 4 Threads:
-
-```text
-Thread 1 -> linhas 1 ate 500
-Thread 2 -> linhas 501 ate 1000
-Thread 3 -> linhas 1001 ate 1500
-Thread 4 -> linhas 1501 ate 2000
-```
-
-Essa estrategia permite testar diferentes niveis de paralelismo e analisar se aumentar a quantidade de Threads melhora ou piora o desempenho.
-
-## Estrutura do Projeto
-
-```text
-Main.java
-SearchStrategy.java
-SearchResult.java
-DatasetUtils.java
-SequentialSearch.java
-SingleThreadSearch.java
-OneThreadPerFileSearch.java
-MultiThreadPerFileSearch.java
-dataset_p/
-dataset_g/
-```
-
-## Descricao dos Arquivos
-
-| Arquivo | Funcao |
-| --- | --- |
-| `Main.java` | Controla o menu, entrada do usuario, escolha do dataset, escolha da estrategia e exibicao do resultado. |
-| `SearchStrategy.java` | Interface comum para todas as estrategias de busca. |
-| `SearchResult.java` | Representa o resultado da busca. |
-| `DatasetUtils.java` | Lista e valida os arquivos `.txt` dos datasets. |
-| `SequentialSearch.java` | Busca sequencial pura. |
-| `SingleThreadSearch.java` | Busca sequencial dentro de uma Thread. |
-| `OneThreadPerFileSearch.java` | Busca paralela com uma Thread por arquivo. |
-| `MultiThreadPerFileSearch.java` | Busca paralela com N Threads por arquivo. |
-| `dataset_p/` | Pasta do dataset pequeno. |
-| `dataset_g/` | Pasta do dataset grande. |
-
-## Configuracao dos Datasets
-
-Os caminhos dos datasets estao configurados no arquivo `Main.java`:
-
-```java
-private static final String DATASET_PEQUENO_PATH = "dataset_p";
-private static final String DATASET_GRANDE_PATH = "dataset_g";
-```
-
-Se as pastas `dataset_p` e `dataset_g` estiverem na mesma pasta dos arquivos `.java`, nao e necessario alterar nada.
-
-Caso estejam em outro local, altere os caminhos manualmente.
-
-Exemplo no Windows:
-
-```java
-private static final String DATASET_PEQUENO_PATH = "C:/Users/User/Documents/GitHub/Paralelismo/dataset_p";
-private static final String DATASET_GRANDE_PATH = "C:/Users/User/Documents/GitHub/Paralelismo/dataset_g";
-```
-
-## Como Compilar
-
-Opcao simples, gerando os arquivos `.class` na propria pasta raiz:
+Na raiz do projeto:
 
 ```bash
-javac *.java
+javac -d out src/*.java
 ```
 
-Opcao alternativa, gerando os arquivos `.class` dentro de uma pasta separada chamada `out`:
+No PowerShell, se o `*.java` nao for expandido pelo ambiente, use:
 
-```bash
-javac -d out *.java
+```powershell
+javac -d out (Get-ChildItem src -Filter *.java)
 ```
 
-## Como Executar
+O `benchmark.py` tambem compila automaticamente antes de executar os testes quando `COMPILE_BEFORE_RUN = True`.
 
-Se compilou com `javac *.java`:
+## Como executar o modo interativo
 
-```bash
-java Main
-```
-
-Se compilou com `javac -d out *.java`:
+Depois de compilar:
 
 ```bash
 java -cp out Main
 ```
 
-Ou entre na pasta `out` e execute:
-
-```bash
-java Main
-```
-
-## Fluxo de Uso
-
-Ao executar o programa, o usuario devera:
-
-1. escolher o dataset;
-2. escolher a estrategia de busca;
-3. digitar o nome completo que deseja procurar;
-4. aguardar o resultado.
-
-Menu esperado:
-
-```text
-=== Escolha o Dataset ===
-1 - Dataset pequeno
-2 - Dataset grande
-```
-
-Depois:
-
-```text
-=== Escolha a Estrategia de Busca ===
-1 - Sequencial
-2 - Sequencial em uma Thread
-3 - Uma Thread por arquivo
-4 - N Threads por arquivo
-```
-
-Se a estrategia escolhida for a opcao `4`, o programa tambem solicitara a quantidade de Threads por arquivo.
-
-## Exemplo de Saida
-
-Quando o nome e encontrado:
+O modo interativo permite escolher o dataset, escolher a estrategia, digitar o nome e visualizar uma saida humana:
 
 ```text
 === Resultado da Busca ===
@@ -295,69 +92,179 @@ Conteudo da linha: Ana Silva
 Tempo de execucao: 12.45 ms
 ```
 
-Quando o nome nao e encontrado:
+## Como executar o modo benchmark manual
 
-```text
-=== Resultado da Busca ===
-Dataset: Grande
-Estrategia: Uma Thread por arquivo
-Nome pesquisado: Ana Silva
-Encontrado: Nao
-Tempo de execucao: 38.91 ms
-```
-
-## Metrica de Speedup
-
-A metrica de Speedup pode ser usada para comparar o desempenho das versoes paralelas com a versao sequencial.
-
-A formula e:
-
-```text
-Speedup = Tempo Sequencial / Tempo Paralelo
-```
-
-Exemplo:
-
-```text
-Tempo sequencial: 100 ms
-Tempo paralelo: 25 ms
-Speedup = 100 / 25
-Speedup = 4
-```
-
-Nesse caso, a versao paralela foi 4 vezes mais rapida que a versao sequencial.
-
-## Observacoes Importantes
-
-- A busca sequencial pura nao utiliza Threads.
-- As estrategias paralelas devem parar o quanto antes quando o nome for encontrado.
-- O tempo medido considera apenas a execucao da busca.
-- A digitacao do usuario nao entra no calculo do tempo.
-- O resultado da busca deve ser sempre o mesmo entre as estrategias.
-- O desempenho pode variar conforme o tamanho dos arquivos, posicao do nome e caracteristicas da maquina.
-
-## Possiveis Evolucoes Futuras
-
-Algumas melhorias podem ser adicionadas posteriormente:
-
-- execucao automatica de testes varias vezes;
-- calculo automatico de media dos tempos;
-- calculo automatico de Speedup;
-- geracao de arquivos `.csv` com os resultados;
-- script em Python para sortear nomes e executar os testes;
-- geracao de graficos;
-- coleta complementar de uso de CPU e memoria;
-- comparacao dos resultados entre maquinas diferentes.
-
-## Requisitos
-
-- Java JDK instalado.
-- Terminal ou PowerShell.
-- Arquivos `.txt` organizados nas pastas dos datasets.
-
-Para verificar se o Java esta instalado corretamente:
+O modo benchmark do Java nao usa entrada interativa e imprime apenas JSON no stdout.
 
 ```bash
-java -version
-javac -version
+java -cp out Main --benchmark --dataset pequeno --strategy sequencial --name "Ana Silva" --format json
+```
+
+```bash
+java -cp out Main --benchmark --dataset grande --strategy multiThreadPerFile --name "Ana Silva" --threads-per-file 4 --format json
+```
+
+Argumentos aceitos:
+
+| Argumento | Obrigatorio | Valores |
+| --- | --- | --- |
+| `--benchmark` | Sim | indica modo automatico |
+| `--dataset` | Sim | `pequeno`, `grande` |
+| `--strategy` | Sim | `sequencial`, `singleThread`, `oneThreadPerFile`, `multiThreadPerFile` |
+| `--name` | Sim | nome completo pesquisado |
+| `--threads-per-file` | Apenas para `multiThreadPerFile` | inteiro maior que zero |
+| `--format` | Nao | `json`, `csv`; padrao: `json` |
+
+O tempo medido pelo Java considera apenas:
+
+```java
+long start = System.nanoTime();
+SearchResult result = strategy.search(datasetPath, targetName);
+long end = System.nanoTime();
+```
+
+Ou seja, nao inclui menus, parse de argumentos, validacao, criacao da estrategia nem impressao do resultado.
+
+## Benchmark automatico com Python
+
+Execute:
+
+```bash
+python scripts/benchmark.py
+```
+
+O script:
+
+- pede para escolher apenas o dataset;
+- sorteia 5 nomes diferentes existentes nos arquivos `.txt`;
+- executa 5 repeticoes por nome;
+- testa 6 configuracoes:
+  - `sequencial`;
+  - `singleThread`;
+  - `oneThreadPerFile`;
+  - `multiThreadPerFile N=2`;
+  - `multiThreadPerFile N=4`;
+  - `multiThreadPerFile N=8`;
+- coleta o JSON retornado pelo Java;
+- salva dados brutos e medias em CSV/JSON;
+- calcula Speedup usando a media da estrategia sequencial como base;
+- gera `relatorio.html` automaticamente.
+
+O experimento padrao possui:
+
+```text
+5 nomes x 5 repeticoes x 6 configuracoes = 150 execucoes
+```
+
+O tempo oficial vem dos campos `wallTimeMs` e `wallTimeNs` retornados pelo Java. O Python nao mede o tempo da busca.
+
+## Saida do benchmark
+
+Cada execucao cria uma pasta em `results/`:
+
+```text
+results/
+└── DATA_HORA_MAQUINA/
+    ├── relatorio.html
+    └── data/
+        ├── resultados_brutos.json
+        ├── resultados_brutos.csv
+        ├── medias_por_nome.csv
+        ├── medias_gerais.csv
+        ├── speedup.csv
+        └── resumo_benchmark.json
+```
+
+Arquivos gerados:
+
+| Arquivo | Conteudo |
+| --- | --- |
+| `resultados_brutos.json` | Metadados, nomes sorteados e todas as execucoes com o JSON completo retornado pelo Java. |
+| `resultados_brutos.csv` | Uma linha por execucao, pronta para Excel/LibreOffice. |
+| `medias_por_nome.csv` | Media, menor e maior tempo agrupados por nome e estrategia. |
+| `medias_gerais.csv` | Media, menor e maior tempo agrupados por estrategia. |
+| `speedup.csv` | Speedup por estrategia/configuracao. |
+| `resumo_benchmark.json` | Resumo geral da tentativa. |
+| `relatorio.html` | Relatorio visual com cards, tabelas, graficos SVG e conclusao automatica. |
+
+## Como abrir o relatorio
+
+Abra diretamente no navegador:
+
+```text
+results/DATA_HORA_MAQUINA/relatorio.html
+```
+
+Nao e necessario servidor web.
+
+Tambem e possivel gerar o relatorio manualmente a partir de uma pasta de resultados existente:
+
+```bash
+python scripts/generate_report.py results/DATA_HORA_MAQUINA
+```
+
+O script procura os dados em:
+
+```text
+results/DATA_HORA_MAQUINA/data/
+```
+
+E escreve:
+
+```text
+results/DATA_HORA_MAQUINA/relatorio.html
+```
+
+## Metricas coletadas
+
+O Java retorna metricas principais e complementares:
+
+- `wallTimeNs`;
+- `wallTimeMs`;
+- `processCpuTimeMs`, quando suportado;
+- `cpuUsageApproxPercent`, quando suportado;
+- `heapUsedBeforeBytes`;
+- `heapUsedAfterBytes`;
+- `heapDeltaBytes`;
+- `availableProcessors`;
+- `javaVersion`;
+- `osName`;
+- `osArch`;
+- `machineName`.
+
+Metricas nulas sao ignoradas nos calculos de media correspondentes.
+
+## Observacao sobre Git
+
+As pastas `out/` e `results/` sao ignoradas pelo Git porque contem arquivos gerados localmente:
+
+- `out/`: classes `.class` compiladas;
+- `results/`: dados e relatorios de benchmark de cada maquina.
+
+Neste repositório, `dataset_p/` e `dataset_g/` permanecem como datasets locais ignorados pelo Git, seguindo a configuracao que ja existia no projeto. Os fontes em `src/` e os scripts em `scripts/` nao sao ignorados.
+
+## Teste rapido
+
+1. Compilar:
+
+```bash
+javac -d out src/*.java
+```
+
+2. Rodar interativo:
+
+```bash
+java -cp out Main
+```
+
+3. Rodar benchmark automatico:
+
+```bash
+python scripts/benchmark.py
+```
+
+4. Abrir relatorio:
+
+```text
+results/PASTA_DA_EXECUCAO/relatorio.html
 ```
