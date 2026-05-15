@@ -38,7 +38,7 @@ public class Main {
     private static void runBenchmark(String[] args) {
         try {
             CliArguments cliArguments = CliArguments.parse(args);
-            DatasetOption datasetOption = benchmarkDatasetOption(cliArguments.getDataset());
+            DatasetOption datasetOption = benchmarkDatasetOption(cliArguments);
             StrategyOption strategyOption = benchmarkStrategyOption(cliArguments);
 
             DatasetUtils.listTxtFiles(datasetOption.path());
@@ -99,7 +99,9 @@ public class Main {
         throw new IllegalArgumentException("Opcao de dataset invalida.");
     }
 
-    private static DatasetOption benchmarkDatasetOption(String dataset) {
+    private static DatasetOption benchmarkDatasetOption(CliArguments cliArguments) {
+        String dataset = cliArguments.getDataset();
+
         if (dataset.equals("pequeno")) {
             return new DatasetOption("Pequeno", "pequeno", resolveDatasetPath(DATASET_PEQUENO_PATH));
         }
@@ -108,7 +110,13 @@ public class Main {
             return new DatasetOption("Grande", "grande", resolveDatasetPath(DATASET_GRANDE_PATH));
         }
 
-        throw new IllegalArgumentException("Dataset invalido. Use pequeno ou grande.");
+        if (dataset.equals("custom")) {
+            Path customPath = resolveDatasetPath(cliArguments.getDatasetPath());
+            String datasetName = customPath.getFileName() == null ? "custom" : customPath.getFileName().toString();
+            return new DatasetOption(datasetName, datasetName, customPath);
+        }
+
+        throw new IllegalArgumentException("Dataset invalido. Use pequeno, grande ou custom.");
     }
 
     private static Path resolveDatasetPath(String datasetPath) {

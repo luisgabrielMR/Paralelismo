@@ -115,7 +115,7 @@ def main():
     print("=== Benchmark de Busca de Nomes ===")
     print()
 
-    dataset_key, dataset_path = choose_dataset()
+    dataset_key, dataset_path, java_dataset = choose_dataset()
     txt_files = list_txt_files(dataset_path)
     validate_java_available()
 
@@ -141,7 +141,7 @@ def main():
     data_dir.mkdir(parents=True, exist_ok=True)
 
     metadata = build_metadata(dataset_key, dataset_path, sampled_names, expected_runs, started_at)
-    runs = execute_benchmark(dataset_key, sampled_names)
+    runs = execute_benchmark(dataset_key, dataset_path, java_dataset, sampled_names)
 
     paths = {
         "resultados_brutos_json": data_dir / "resultados_brutos.json",
@@ -200,20 +200,52 @@ def main():
 
 
 def choose_dataset():
+    custom_datasets = discover_custom_datasets()
+
     print("Escolha o dataset:")
-    print("1 - Dataset pequeno")
-    print("2 - Dataset grande")
+    print("1 - Dataset pequeno (dataset_p)")
+    print("2 - Dataset grande (dataset_g)")
+
+    for index, dataset_path in enumerate(custom_datasets, start=3):
+        print(f"{index} - {dataset_path.name}")
+
     print()
 
     choice = input("Opcao: ").strip()
 
     if choice == "1":
-        return "pequeno", DATASET_PEQUENO_PATH
+        return "pequeno", DATASET_PEQUENO_PATH, "pequeno"
 
     if choice == "2":
-        return "grande", DATASET_GRANDE_PATH
+        return "grande", DATASET_GRANDE_PATH, "grande"
 
-    raise SystemExit("Erro: opcao de dataset invalida. Use 1 ou 2.")
+    try:
+        option = int(choice)
+    except ValueError:
+        option = -1
+
+    custom_index = option - 3
+    if 0 <= custom_index < len(custom_datasets):
+        dataset_path = custom_datasets[custom_index]
+        return dataset_path.name, dataset_path, "custom"
+
+    raise SystemExit("Erro: opcao de dataset invalida. Escolha uma das opcoes listadas.")
+
+
+def discover_custom_datasets():
+    fixed_names = {DATASET_PEQUENO_PATH.name, DATASET_GRANDE_PATH.name}
+    datasets = []
+
+    for path in PROJECT_ROOT.iterdir():
+        if not path.is_dir():
+            continue
+        if not path.name.startswith("dataset_"):
+            continue
+        if path.name in fixed_names:
+            continue
+        datasets.append(path)
+
+    return sorted(datasets, key=lambda path: path.name.lower())
 
 
 def compile_java():
@@ -373,7 +405,7 @@ def read_lines(file_path):
         raise SystemExit(f"Erro ao ler arquivo {file_path}: {exc}")
 
 
-def execute_benchmark(dataset_key, sampled_names):
+def execute_benchmark(dataset_key, dataset_path, java_dataset, sampled_names):
     runs = []
     run_id = 1
 
@@ -384,15 +416,15 @@ def execute_benchmark(dataset_key, sampled_names):
         for config in STRATEGY_CONFIGS:
             for repetition in range(1, REPETICOES_POR_ESTRATEGIA + 1):
                 print(f"  {strategy_label(config)} - repeticao {repetition}/{REPETICOES_POR_ESTRATEGIA}")
-                runs.append(run_java_benchmark(run_id, dataset_key, sampled_name, config, repetition))
+                runs.append(run_java_benchmark(run_id, dataset_key, dataset_path, java_dataset, sampled_name, config, repetition))
                 run_id += 1
 
     return runs
 
 
-def run_java_benchmark(run_id, dataset_key, sampled_name, config, repetition):
+def run_java_benchmark(run_id, dataset_key, dataset_path, java_dataset, sampled_name, config, repetition):
     timestamp = datetime.now().isoformat(timespec="seconds")
-    command = build_java_command(dataset_key, sampled_name["nome"], config)
+    command = build_java_command(java_dataset, dataset_path, sampled_name["nome"], config)
     record = base_run_record(run_id, timestamp, dataset_key, sampled_name, config, repetition)
 
     try:
@@ -423,7 +455,7 @@ def run_java_benchmark(run_id, dataset_key, sampled_name, config, repetition):
     return record
 
 
-def build_java_command(dataset_key, name, config):
+def build_java_command(java_dataset, dataset_path, name, config):
     command = [
         JAVA_COMMAND,
         "-cp",
@@ -431,12 +463,18 @@ def build_java_command(dataset_key, name, config):
         JAVA_MAIN_CLASS,
         "--benchmark",
         "--dataset",
-        dataset_key,
+        java_dataset,
+    ]
+
+    if java_dataset == "custom":
+        command.extend(["--dataset-path", str(dataset_path)])
+
+    command.extend([
         "--strategy",
         config["strategy"],
         "--name",
         name,
-    ]
+    ])
 
     if config["strategy"] == "multiThreadPerFile":
         command.extend(["--threads-per-file", str(config["threads_per_file"])])

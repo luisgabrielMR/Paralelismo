@@ -7,13 +7,15 @@ public class CliArguments {
     private final String targetName;
     private final String format;
     private final int threadsPerFile;
+    private final String datasetPath;
 
-    private CliArguments(String dataset, String strategy, String targetName, String format, int threadsPerFile) {
+    private CliArguments(String dataset, String strategy, String targetName, String format, int threadsPerFile, String datasetPath) {
         this.dataset = dataset;
         this.strategy = strategy;
         this.targetName = targetName;
         this.format = format;
         this.threadsPerFile = threadsPerFile;
+        this.datasetPath = datasetPath;
     }
 
     public static CliArguments parse(String[] args) {
@@ -52,8 +54,16 @@ public class CliArguments {
         String targetName = require(values, "--name");
         String format = values.getOrDefault("--format", "json");
 
-        if (!dataset.equals("pequeno") && !dataset.equals("grande")) {
-            throw new IllegalArgumentException("Dataset invalido. Use pequeno ou grande.");
+        if (!dataset.equals("pequeno") && !dataset.equals("grande") && !dataset.equals("custom")) {
+            throw new IllegalArgumentException("Dataset invalido. Use pequeno, grande ou custom.");
+        }
+
+        String datasetPath = values.get("--dataset-path");
+
+        if (dataset.equals("custom")) {
+            datasetPath = require(values, "--dataset-path");
+        } else if (datasetPath != null && datasetPath.trim().isEmpty()) {
+            throw new IllegalArgumentException("--dataset-path nao pode estar vazio.");
         }
 
         if (!strategy.equals("sequencial")
@@ -80,7 +90,7 @@ public class CliArguments {
             threadsPerFile = parseThreadsPerFile(values.get("--threads-per-file"));
         }
 
-        return new CliArguments(dataset, strategy, targetName, format, threadsPerFile);
+        return new CliArguments(dataset, strategy, targetName, format, threadsPerFile, datasetPath);
     }
 
     private static String require(Map<String, String> values, String name) {
@@ -96,6 +106,7 @@ public class CliArguments {
     private static boolean isKnownArgument(String arg) {
         return arg.equals("--dataset")
                 || arg.equals("--strategy")
+                || arg.equals("--dataset-path")
                 || arg.equals("--name")
                 || arg.equals("--threads-per-file")
                 || arg.equals("--format");
@@ -133,5 +144,9 @@ public class CliArguments {
 
     public int getThreadsPerFile() {
         return threadsPerFile;
+    }
+
+    public String getDatasetPath() {
+        return datasetPath;
     }
 }

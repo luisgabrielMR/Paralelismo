@@ -104,12 +104,19 @@ java -cp out Main --benchmark --dataset pequeno --strategy sequencial --name "An
 java -cp out Main --benchmark --dataset grande --strategy multiThreadPerFile --name "Ana Silva" --threads-per-file 4 --format json
 ```
 
+Para executar manualmente com um dataset personalizado gerado na raiz do projeto:
+
+```bash
+java -cp out Main --benchmark --dataset custom --dataset-path "dataset_xg" --strategy sequencial --name "Ana Silva" --format json
+```
+
 Argumentos aceitos:
 
 | Argumento | Obrigatorio | Valores |
 | --- | --- | --- |
 | `--benchmark` | Sim | indica modo automatico |
-| `--dataset` | Sim | `pequeno`, `grande` |
+| `--dataset` | Sim | `pequeno`, `grande`, `custom` |
+| `--dataset-path` | Apenas para `--dataset custom` | caminho para uma pasta de dataset personalizada |
 | `--strategy` | Sim | `sequencial`, `singleThread`, `oneThreadPerFile`, `multiThreadPerFile` |
 | `--name` | Sim | nome completo pesquisado |
 | `--threads-per-file` | Apenas para `multiThreadPerFile` | inteiro maior que zero |
@@ -135,7 +142,7 @@ python scripts/benchmark.py
 
 O script:
 
-- pede para escolher apenas o dataset;
+- pede para escolher o dataset, incluindo pastas personalizadas `dataset_*` encontradas na raiz do projeto;
 - sorteia 5 nomes diferentes existentes nos arquivos `.txt`;
 - executa 5 repeticoes por nome;
 - testa 6 configuracoes:
@@ -157,6 +164,15 @@ O experimento padrao possui:
 ```
 
 O tempo oficial vem dos campos `wallTimeMs` e `wallTimeNs` retornados pelo Java. O Python nao mede o tempo da busca.
+
+Além das opções fixas:
+
+```text
+1 - Dataset pequeno (dataset_p)
+2 - Dataset grande (dataset_g)
+```
+
+o `benchmark.py` lista automaticamente outras pastas cujo nome começa com `dataset_`, como `dataset_xg`, `dataset_20x50k` ou `dataset_teste`. As pastas `dataset_p` e `dataset_g` aparecem somente nas opções fixas.
 
 ## Saida do benchmark
 
@@ -215,6 +231,87 @@ E escreve:
 results/DATA_HORA_MAQUINA/relatorio.html
 ```
 
+## Geração de datasets sintéticos
+
+O script `scripts/generate_dataset.py` gera datasets `.txt` maiores para testar melhor as estrategias sequenciais e paralelas.
+
+Datasets maiores sao uteis porque, em bases pequenas, a estrategia sequencial pode vencer com frequencia: o custo de criar, agendar e coordenar Threads pode ser maior do que o custo real da busca. Com mais arquivos e mais nomes por arquivo, fica mais facil observar quando as estrategias paralelas passam a compensar.
+
+Cada arquivo gerado contem exatamente um nome completo por linha. Todos os nomes completos sao unicos no dataset inteiro. O mesmo primeiro nome ou sobrenome pode aparecer em varias linhas, e sobrenomes podem se repetir dentro do mesmo nome completo; o que nao se repete e a linha completa.
+
+Exemplo:
+
+```bash
+python scripts/generate_dataset.py --output dataset_xg --files 10 --names-per-file 100000 --seed 42
+```
+
+Isso gera:
+
+```text
+dataset_xg/
+├── arq_1.txt
+├── arq_2.txt
+├── ...
+├── arq_10.txt
+└── manifest.json
+```
+
+Argumentos:
+
+| Argumento | Descricao |
+| --- | --- |
+| `--output` | Pasta de saida do dataset. |
+| `--files` | Quantidade de arquivos `.txt`. |
+| `--names-per-file` | Quantidade de nomes por arquivo. |
+| `--seed` | Seed opcional para embaralhamento reprodutivel. |
+| `--force` | Apaga e recria a pasta de saida se ela ja existir. |
+| `--no-shuffle` | Gera os nomes em ordem deterministica, sem embaralhar. |
+
+Exemplos:
+
+```bash
+python scripts/generate_dataset.py --output dataset_xg --files 10 --names-per-file 100000 --seed 42
+```
+
+```bash
+python scripts/generate_dataset.py --output dataset_20x50k --files 20 --names-per-file 50000 --seed 123 --force
+```
+
+```bash
+python scripts/generate_dataset.py --output dataset_ordem --files 10 --names-per-file 100000 --no-shuffle --force
+```
+
+O script escolhe automaticamente o formato necessario conforme o total solicitado:
+
+| Formato | Exemplo | Limite usado pelo script |
+| --- | --- | --- |
+| Nome + Sobrenome | `Ana Silva` | ate 10.000 nomes |
+| Nome + Sobrenome + Sobrenome | `Ana Silva Santos` | ate 1.000.000 nomes |
+| Nome + Nome + Sobrenome + Sobrenome | `Ana Clara Silva Santos` | ate 100.000.000 nomes |
+| Nome + Nome + Sobrenome + Sobrenome + Sobrenome | `Ana Clara Silva Santos Costa` | ate 10.000.000.000 nomes |
+
+O `manifest.json` registra a configuracao usada, quantidade de arquivos, total de nomes, formato escolhido, capacidade, seed, se houve shuffle, data/hora, versao do Python, sistema operacional e nome da maquina.
+
+O gerador usa indices combinatorios para garantir unicidade sem precisar manter todos os nomes completos em memoria.
+
+Depois de gerar um dataset com nome iniciado por `dataset_`, ele aparece automaticamente no menu do benchmark:
+
+```bash
+python scripts/benchmark.py
+```
+
+Exemplo de menu:
+
+```text
+Escolha o dataset:
+1 - Dataset pequeno (dataset_p)
+2 - Dataset grande (dataset_g)
+3 - dataset_xg
+4 - dataset_20x50k
+```
+
+Ao escolher uma pasta personalizada, o Python chama o Java com `--dataset custom --dataset-path caminho_do_dataset`.
+
 ## Metricas coletadas
 
 O Java retorna metricas principais e complementares:
@@ -241,7 +338,7 @@ As pastas `out/` e `results/` sao ignoradas pelo Git porque contem arquivos gera
 - `out/`: classes `.class` compiladas;
 - `results/`: dados e relatorios de benchmark de cada maquina.
 
-Neste repositório, `dataset_p/` e `dataset_g/` permanecem como datasets locais ignorados pelo Git, seguindo a configuracao que ja existia no projeto. Os fontes em `src/` e os scripts em `scripts/` nao sao ignorados.
+Neste repositório, `dataset_p/`, `dataset_g/` e datasets personalizados `dataset_*/` permanecem como dados locais ignorados pelo Git. Os fontes em `src/` e os scripts em `scripts/` nao sao ignorados.
 
 ## Teste rapido
 
