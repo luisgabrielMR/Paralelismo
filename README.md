@@ -231,6 +231,70 @@ E escreve:
 results/DATA_HORA_MAQUINA/relatorio.html
 ```
 
+## Relatorio consolidado do grupo
+
+Cada integrante deve rodar o benchmark na propria maquina:
+
+```bash
+python scripts/benchmark.py
+```
+
+Isso gera uma pasta individual dentro de `results/`. Para montar o relatorio consolidado, junte as pastas geradas pelos integrantes dentro de `results/` e execute:
+
+```bash
+python scripts/compare_results.py
+```
+
+Opcionalmente, informe outro diretorio de resultados:
+
+```bash
+python scripts/compare_results.py --results-dir results
+```
+
+O script procura automaticamente pastas que tenham:
+
+```text
+data/resultados_brutos.csv
+data/medias_gerais.csv
+data/speedup.csv
+data/resumo_benchmark.json
+```
+
+Pastas incompletas sao ignoradas com aviso. Relatorios consolidados antigos `group_report_*` tambem sao ignorados para nao entrar na comparacao.
+
+A saida gerada fica em:
+
+```text
+results/
+└── group_report_DATA_HORA/
+    ├── group_report.html
+    └── data/
+        ├── resultados_consolidados.csv
+        ├── medias_por_maquina.csv
+        ├── medias_gerais_grupo.csv
+        ├── speedup_por_maquina.csv
+        ├── speedup_geral_grupo.csv
+        └── resumo_grupo.json
+```
+
+O HTML consolidado tem duas partes:
+
+1. Analise Principal da Atividade:
+   - usa apenas os datasets `pequeno` e `grande`;
+   - mostra tempo medio, menor tempo e maior tempo;
+   - calcula Speedup;
+   - compara as maquinas;
+   - responde diretamente ao que foi pedido na atividade.
+
+2. Analises Complementares:
+   - usa datasets maiores, como `dataset_xg` ou `dataset_100x200k`;
+   - mostra CPU, quando disponivel;
+   - mostra memoria heap, quando disponivel;
+   - compara o impacto de `multiThreadPerFile` com N=2, N=4 e N=8;
+   - aprofunda a analise de overhead e paralelismo.
+
+Como `results/` e ignorado pelo Git, as pastas de resultado devem ser compartilhadas manualmente entre os integrantes antes de rodar o comparador.
+
 ## Geração de datasets sintéticos
 
 O script `scripts/generate_dataset.py` gera datasets `.txt` maiores para testar melhor as estrategias sequenciais e paralelas.
