@@ -1,5 +1,6 @@
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class BenchmarkMetrics {
     private final long wallTimeNs;
@@ -48,9 +49,9 @@ public class BenchmarkMetrics {
 
     public static ProcessCpuSnapshot processCpuSnapshot() {
         java.lang.management.OperatingSystemMXBean bean = ManagementFactory.getOperatingSystemMXBean();
+        com.sun.management.OperatingSystemMXBean osBean = asProcessCpuTimeBean(bean);
 
-        if (bean instanceof com.sun.management.OperatingSystemMXBean) {
-            com.sun.management.OperatingSystemMXBean osBean = (com.sun.management.OperatingSystemMXBean) bean;
+        if (osBean != null) {
             long processCpuTimeNs = osBean.getProcessCpuTime();
 
             if (processCpuTimeNs >= 0) {
@@ -59,6 +60,16 @@ public class BenchmarkMetrics {
         }
 
         return new ProcessCpuSnapshot(false, -1L);
+    }
+
+    private static com.sun.management.OperatingSystemMXBean asProcessCpuTimeBean(
+            java.lang.management.OperatingSystemMXBean bean
+    ) {
+        if (!com.sun.management.OperatingSystemMXBean.class.isInstance(bean)) {
+            return null;
+        }
+
+        return com.sun.management.OperatingSystemMXBean.class.cast(bean);
     }
 
     private static Double calculateCpuUsage(long processCpuTimeNs, long wallTimeNs, int availableProcessors) {
@@ -72,7 +83,7 @@ public class BenchmarkMetrics {
     private static String resolveMachineName() {
         try {
             return InetAddress.getLocalHost().getHostName();
-        } catch (Exception e) {
+        } catch (UnknownHostException | SecurityException e) {
             return "unknown";
         }
     }

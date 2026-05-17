@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -158,7 +159,7 @@ public class Main {
             }
 
             return location;
-        } catch (Exception e) {
+        } catch (URISyntaxException | SecurityException | NullPointerException e) {
             return null;
         }
     }

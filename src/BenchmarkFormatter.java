@@ -132,34 +132,24 @@ public class BenchmarkFormatter {
         for (int index = 0; index < value.length(); index++) {
             char ch = value.charAt(index);
 
-            switch (ch) {
-                case '"':
-                    builder.append("\\\"");
-                    break;
-                case '\\':
-                    builder.append("\\\\");
-                    break;
-                case '\b':
-                    builder.append("\\b");
-                    break;
-                case '\f':
-                    builder.append("\\f");
-                    break;
-                case '\n':
-                    builder.append("\\n");
-                    break;
-                case '\r':
-                    builder.append("\\r");
-                    break;
-                case '\t':
-                    builder.append("\\t");
-                    break;
-                default:
-                    if (ch < 0x20) {
-                        builder.append(String.format("\\u%04x", (int) ch));
-                    } else {
-                        builder.append(ch);
-                    }
+            if (ch == '"') {
+                builder.append("\\\"");
+            } else if (ch == '\\') {
+                builder.append("\\\\");
+            } else if (ch == '\b') {
+                builder.append("\\b");
+            } else if (ch == '\f') {
+                builder.append("\\f");
+            } else if (ch == '\n') {
+                builder.append("\\n");
+            } else if (ch == '\r') {
+                builder.append("\\r");
+            } else if (ch == '\t') {
+                builder.append("\\t");
+            } else if (ch < 0x20) {
+                builder.append(String.format("\\u%04x", (int) ch));
+            } else {
+                builder.append(ch);
             }
         }
 
