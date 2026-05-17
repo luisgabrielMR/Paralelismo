@@ -4,9 +4,6 @@ out/
 bin/
 build/
 
-# Benchmark results
-results/
-
 # Local datasets
 dataset_p/
 dataset_g/

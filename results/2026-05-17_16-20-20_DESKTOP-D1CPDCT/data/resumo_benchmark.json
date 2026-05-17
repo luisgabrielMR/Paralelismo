@@ -1,0 +1,29 @@
+{
+  "machinePython": "DESKTOP-D1CPDCT",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "dataset": "pequeno",
+  "startedAt": "2026-05-17T16:20:20",
+  "finishedAt": "2026-05-17T16:20:49",
+  "totalExecucoesEsperadas": 150,
+  "totalExecucoesComSucesso": 150,
+  "totalExecucoesComErro": 0,
+  "melhorEstrategiaPorTempoMedio": {
+    "strategy": "sequencial",
+    "threadsPerFile": 0,
+    "mediaWallTimeMs": 10.920347999999999
+  },
+  "maiorSpeedup": {
+    "strategy": "sequencial",
+    "threadsPerFile": 0,
+    "speedup": 1.0
+  },
+  "arquivosGerados": {
+    "resultados_brutos_json": "C:\\Users\\User\\Documents\\GitHub\\Paralelismo\\results\\2026-05-17_16-20-20_DESKTOP-D1CPDCT\\data\\resultados_brutos.json",
+    "resultados_brutos_csv": "C:\\Users\\User\\Documents\\GitHub\\Paralelismo\\results\\2026-05-17_16-20-20_DESKTOP-D1CPDCT\\data\\resultados_brutos.csv",
+    "medias_por_nome_csv": "C:\\Users\\User\\Documents\\GitHub\\Paralelismo\\results\\2026-05-17_16-20-20_DESKTOP-D1CPDCT\\data\\medias_por_nome.csv",
+    "medias_gerais_csv": "C:\\Users\\User\\Documents\\GitHub\\Paralelismo\\results\\2026-05-17_16-20-20_DESKTOP-D1CPDCT\\data\\medias_gerais.csv",
+    "speedup_csv": "C:\\Users\\User\\Documents\\GitHub\\Paralelismo\\results\\2026-05-17_16-20-20_DESKTOP-D1CPDCT\\data\\speedup.csv",
+    "resumo_benchmark_json": "C:\\Users\\User\\Documents\\GitHub\\Paralelismo\\results\\2026-05-17_16-20-20_DESKTOP-D1CPDCT\\data\\resumo_benchmark.json",
+    "relatorio_html": "C:\\Users\\User\\Documents\\GitHub\\Paralelismo\\results\\2026-05-17_16-20-20_DESKTOP-D1CPDCT\\relatorio.html"
+  }
+}

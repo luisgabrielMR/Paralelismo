@@ -1,0 +1,31 @@
+dataset,nome_id,nome_sorteado,strategy,threads_per_file,quantidade_execucoes,media_wall_time_ms,menor_wall_time_ms,maior_wall_time_ms,media_process_cpu_time_ms,media_cpu_usage_approx_percent,media_heap_delta_bytes
+grande,1,Aaron Graves,multiThreadPerFile,2,5,45.401979999999995,42.933,48.6159,112.5,20.6839974,6375320.0
+grande,1,Aaron Graves,multiThreadPerFile,4,5,44.920519999999996,41.804,47.7542,146.875,27.214826600000002,8442777.6
+grande,1,Aaron Graves,multiThreadPerFile,8,5,43.5544,40.7966,48.89,162.5,31.3488042,11640692.8
+grande,1,Aaron Graves,oneThreadPerFile,0,5,41.37972,40.0553,44.3933,284.375,57.69815680000001,8388662.4
+grande,1,Aaron Graves,sequencial,0,5,34.60428,29.538,37.8423,93.75,22.2493166,4806497.6
+grande,1,Aaron Graves,singleThread,0,5,41.56824,36.9337,44.9848,103.125,20.770608,5201000.0
+grande,2,Eric Gates MD,multiThreadPerFile,2,5,29.851760000000002,27.4618,32.98,75.0,20.8021534,3187672.0
+grande,2,Eric Gates MD,multiThreadPerFile,4,5,29.094240000000003,26.7827,30.1997,96.875,27.515576599999996,5200998.4
+grande,2,Eric Gates MD,multiThreadPerFile,8,5,29.77328,28.7701,30.7924,171.875,48.303529600000005,8391928.0
+grande,2,Eric Gates MD,oneThreadPerFile,0,5,40.5775,36.1049,42.7384,300.0,61.6703,8388665.6
+grande,2,Eric Gates MD,sequencial,0,5,18.77774,16.9013,20.2392,37.5,16.7080706,1476396.8
+grande,2,Eric Gates MD,singleThread,0,5,21.34852,19.8942,23.085,37.5,14.890443200000002,2181008.0
+grande,3,Danielle Garner,multiThreadPerFile,2,5,41.49284,39.8403,44.6696,96.875,19.530790200000002,6375315.2
+grande,3,Danielle Garner,multiThreadPerFile,4,5,44.58388,39.864,47.9669,159.375,29.4270672,8442774.4
+grande,3,Danielle Garner,multiThreadPerFile,8,5,42.40588,39.5626,45.2472,156.25,30.6713594,11640694.4
+grande,3,Danielle Garner,oneThreadPerFile,0,5,22.618299999999998,21.0975,23.5848,71.875,26.4828106,6375328.0
+grande,3,Danielle Garner,sequencial,0,5,31.053539999999998,27.9904,34.7333,78.125,20.987209999999997,3397179.2
+grande,3,Danielle Garner,singleThread,0,5,37.3706,35.5642,38.2944,90.625,20.2684228,4398948.8
+grande,4,Russell Baxter,multiThreadPerFile,2,5,36.64114,33.331,39.8463,109.375,24.6845134,5200993.6
+grande,4,Russell Baxter,multiThreadPerFile,4,5,54.823040000000006,37.6661,106.6789,121.875,22.0161564,7210643.2
+grande,4,Russell Baxter,multiThreadPerFile,8,5,39.4253,35.1136,43.8532,103.125,22.498415599999998,9619192.0
+grande,4,Russell Baxter,oneThreadPerFile,0,5,44.06772,39.0469,50.0775,293.75,55.2016036,8388649.6
+grande,4,Russell Baxter,sequencial,0,5,26.4252,25.166,30.1179,84.375,26.776268199999997,4001172.8
+grande,4,Russell Baxter,singleThread,0,5,31.752139999999997,30.266,33.7336,90.625,23.6427126,4194344.0
+grande,5,Kathryn Gould,multiThreadPerFile,2,5,37.64804,35.8309,43.4784,115.625,25.4713696,5201000.0
+grande,5,Kathryn Gould,multiThreadPerFile,4,5,39.33236,35.8299,43.8308,118.75,24.7927686,7419472.0
+grande,5,Kathryn Gould,multiThreadPerFile,8,5,40.0532,36.655,44.4818,106.25,21.8964926,9619192.0
+grande,5,Kathryn Gould,oneThreadPerFile,0,5,43.0152,40.5641,47.449,228.125,43.8573064,8388648.0
+grande,5,Kathryn Gould,sequencial,0,5,25.88936,24.7245,27.0358,65.625,21.0420764,2793185.6
+grande,5,Kathryn Gould,singleThread,0,5,29.94658,28.2306,32.832,65.625,18.1866056,3187672.0

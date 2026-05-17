@@ -1,0 +1,31 @@
+dataset,nome_id,nome_sorteado,strategy,threads_per_file,quantidade_execucoes,media_wall_time_ms,menor_wall_time_ms,maior_wall_time_ms,media_process_cpu_time_ms,media_cpu_usage_approx_percent,media_heap_delta_bytes
+pequeno,1,Dave Harris,multiThreadPerFile,2,5,19.88436,18.7839,20.9763,34.375,14.299949000000002,2181016.0
+pequeno,1,Dave Harris,multiThreadPerFile,4,5,20.31374,19.5917,21.6331,59.375,24.6811234,4194337.6
+pequeno,1,Dave Harris,multiThreadPerFile,8,5,20.435840000000002,20.0839,20.9147,87.5,35.5744404,7381984.0
+pequeno,1,Dave Harris,oneThreadPerFile,0,5,15.038720000000001,14.693,15.3661,56.25,31.097496200000002,5201028.8
+pequeno,1,Dave Harris,sequencial,0,5,12.1002,11.3324,13.2936,9.375,6.2910960000000005,1711270.4
+pequeno,1,Dave Harris,singleThread,0,5,15.032580000000001,14.5117,15.5782,37.5,20.7871356,2181008.0
+pequeno,2,Elizabeth Wilson,multiThreadPerFile,2,5,19.11214,18.358,19.4454,21.875,9.586541200000001,2181016.0
+pequeno,2,Elizabeth Wilson,multiThreadPerFile,4,5,19.59556,18.9627,20.2954,15.625,6.6478972,4194340.8
+pequeno,2,Elizabeth Wilson,multiThreadPerFile,8,5,21.490640000000003,20.6184,22.6802,78.125,30.312776200000002,7381984.0
+pequeno,2,Elizabeth Wilson,oneThreadPerFile,0,5,19.24564,17.9145,20.4895,62.5,27.2026744,5201032.0
+pequeno,2,Elizabeth Wilson,sequencial,0,5,11.97334,11.3927,13.0623,25.0,17.6277806,1711270.4
+pequeno,2,Elizabeth Wilson,singleThread,0,5,15.66598,15.4468,16.113,28.125,15.0452798,2181008.0
+pequeno,3,Stephen Ford DDS,multiThreadPerFile,2,5,21.74828,20.1049,24.9422,62.5,24.3570812,2181016.0
+pequeno,3,Stephen Ford DDS,multiThreadPerFile,4,5,22.52448,21.9227,23.2719,43.75,16.2715612,4194329.6
+pequeno,3,Stephen Ford DDS,multiThreadPerFile,8,5,22.01442,21.1414,23.1151,40.625,15.038576,7381984.0
+pequeno,3,Stephen Ford DDS,oneThreadPerFile,0,5,15.852,14.1018,17.0532,21.875,11.4202884,5201033.6
+pequeno,3,Stephen Ford DDS,sequencial,0,5,11.92938,11.7421,12.0942,31.25,21.916985599999997,1711270.4
+pequeno,3,Stephen Ford DDS,singleThread,0,5,16.61816,15.6706,18.1279,50.0,24.949653,2181008.0
+pequeno,4,Tanner Neal,multiThreadPerFile,2,5,16.797140000000002,16.109,17.8158,31.25,15.56439,2181016.0
+pequeno,4,Tanner Neal,multiThreadPerFile,4,5,17.26878,16.8804,17.8386,34.375,16.633868,4194342.4
+pequeno,4,Tanner Neal,multiThreadPerFile,8,5,17.240460000000002,16.7942,17.5192,31.25,15.085128399999999,7381984.0
+pequeno,4,Tanner Neal,oneThreadPerFile,0,5,18.13438,17.1439,19.5915,53.125,24.7720742,5201030.4
+pequeno,4,Tanner Neal,sequencial,0,5,9.71176,9.4455,10.0754,18.75,15.977906,1073739.2
+pequeno,4,Tanner Neal,singleThread,0,5,13.50986,13.0894,13.7802,21.875,13.601705,1375683.2
+pequeno,5,Robert Tucker,multiThreadPerFile,2,5,15.81726,15.265,16.2642,18.75,9.9394384,2181016.0
+pequeno,5,Robert Tucker,multiThreadPerFile,4,5,17.87374,15.4232,27.023,25.0,11.2640748,4194347.2
+pequeno,5,Robert Tucker,multiThreadPerFile,8,5,15.8316,15.4567,16.2076,40.625,21.2597136,7381992.0
+pequeno,5,Robert Tucker,oneThreadPerFile,0,5,18.61262,17.4998,19.5705,53.125,23.6623332,5201051.2
+pequeno,5,Robert Tucker,sequencial,0,5,8.88706,8.436,9.368,15.625,14.4916076,1107276.8
+pequeno,5,Robert Tucker,singleThread,0,5,12.311119999999999,11.9856,13.115,15.625,10.748000399999999,1174352.0

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Relatorio de Benchmark - Busca de Nomes</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --text: #1d2733;
+      --muted: #667085;
+      --line: #d9e0ea;
+      --accent: #1264a3;
+      --accent-2: #16845f;
+      --warn: #9a6700;
+      --shadow: 0 10px 30px rgba(31, 42, 55, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.5 Arial, Helvetica, sans-serif;
+    }
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+    header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 18px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+    }
+    .subtitle { color: var(--muted); margin: 0; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .card, section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    .card { padding: 16px; }
+    .card .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 6px;
+    }
+    .card .value {
+      font-size: 18px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+    section {
+      padding: 20px;
+      margin: 18px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #eef3f8;
+      font-weight: 700;
+      color: #263442;
+    }
+    tr.highlight-best td { background: #edf8f2; }
+    .table-wrap { overflow-x: auto; }
+    .chart {
+      width: 100%;
+      min-height: 280px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+      padding: 10px;
+    }
+    .note {
+      color: var(--warn);
+      background: #fff7dd;
+      border: 1px solid #f0d98c;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin: 10px 0 0;
+    }
+    .conclusion {
+      font-size: 16px;
+      background: #f8fbff;
+      border-left: 4px solid var(--accent);
+      padding: 14px 16px;
+      border-radius: 6px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #e8f2fb;
+      color: #0f5487;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Relatório de Benchmark - Busca de Nomes</h1>
+    <p class="subtitle">Comparação de estratégias sequenciais e paralelas usando os tempos medidos pelo Java.</p>
+  </header>
+
+  <div class="grid">
+    
+    <div class="card">
+      <div class="label">Máquina</div>
+      <div class="value">DESKTOP-D1CPDCT</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Dataset</div>
+      <div class="value">grande</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Data/hora</div>
+      <div class="value">2026-05-17T16:21:56</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Execuções esperadas</div>
+      <div class="value">150</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Execuções com sucesso</div>
+      <div class="value">150</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Execuções com erro</div>
+      <div class="value">0</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Melhor estratégia</div>
+      <div class="value">sequencial (27.35 ms)</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Maior Speedup</div>
+      <div class="value">sequencial (1x)</div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Ambiente</h2>
+    
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Valor</th></tr></thead>
+        <tbody><tr><td>Versão do Java</td><td>25.0.3</td></tr><tr><td>Sistema operacional</td><td>Windows 10</td></tr><tr><td>Arquitetura</td><td>amd64</td></tr><tr><td>Processadores disponíveis</td><td>12</td></tr><tr><td>Máquina Java</td><td>DESKTOP-D1CPDCT</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Nomes Sorteados</h2>
+    
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>nome_id</th><th>nome sorteado</th><th>arquivo sorteado</th><th>linha sorteada</th></tr></thead>
+        <tbody><tr><td>1</td><td>Aaron Graves</td><td>a6.txt</td><td>5856</td></tr><tr><td>2</td><td>Eric Gates MD</td><td>a2.txt</td><td>3990</td></tr><tr><td>3</td><td>Danielle Garner</td><td>a6.txt</td><td>724</td></tr><tr><td>4</td><td>Russell Baxter</td><td>a4.txt</td><td>7462</td></tr><tr><td>5</td><td>Kathryn Gould</td><td>a4.txt</td><td>4602</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Médias Gerais</h2>
+    
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>strategy</th><th>threads_per_file</th><th>quantidade_execucoes</th><th>media_wall_time_ms</th><th>menor_wall_time_ms</th><th>maior_wall_time_ms</th><th>media_process_cpu_time_ms</th><th>media_cpu_usage_approx_percent</th><th>media_heap_delta_bytes</th></tr></thead>
+        <tbody><tr><td>multiThreadPerFile</td><td>2</td><td>25</td><td>38.2072</td><td>27.4618</td><td>48.6159</td><td>101.875</td><td>22.2346</td><td>5268060.16</td></tr><tr><td>multiThreadPerFile</td><td>4</td><td>25</td><td>42.5508</td><td>26.7827</td><td>106.6789</td><td>128.75</td><td>26.1933</td><td>7343333.12</td></tr><tr><td>multiThreadPerFile</td><td>8</td><td>25</td><td>39.0424</td><td>28.7701</td><td>48.89</td><td>140</td><td>30.9437</td><td>10182339.84</td></tr><tr><td>oneThreadPerFile</td><td>0</td><td>25</td><td>38.3317</td><td>21.0975</td><td>50.0775</td><td>235.625</td><td>48.982</td><td>7985990.72</td></tr><tr class="highlight-best"><td>sequencial</td><td>0</td><td>25</td><td>27.35</td><td>16.9013</td><td>37.8423</td><td>71.875</td><td>21.5526</td><td>3294886.4</td></tr><tr><td>singleThread</td><td>0</td><td>25</td><td>32.3972</td><td>19.8942</td><td>44.9848</td><td>77.5</td><td>19.5518</td><td>3832594.56</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Speedup</h2>
+    
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>strategy</th><th>threads_per_file</th><th>media_wall_time_ms</th><th>tempo_base_sequencial_ms</th><th>speedup</th></tr></thead>
+        <tbody><tr><td>multiThreadPerFile</td><td>2</td><td>38.2072</td><td>27.35</td><td>0.7158</td></tr><tr><td>multiThreadPerFile</td><td>4</td><td>42.5508</td><td>27.35</td><td>0.6428</td></tr><tr><td>multiThreadPerFile</td><td>8</td><td>39.0424</td><td>27.35</td><td>0.7005</td></tr><tr><td>oneThreadPerFile</td><td>0</td><td>38.3317</td><td>27.35</td><td>0.7135</td></tr><tr class="highlight-best"><td>sequencial</td><td>0</td><td>27.35</td><td>27.35</td><td>1</td></tr><tr><td>singleThread</td><td>0</td><td>32.3972</td><td>27.35</td><td>0.8442</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Tempo Médio por Estratégia</h2>
+    <div class="chart"><svg width="680" height="288" viewBox="0 0 680 288" role="img" aria-label="Média wallTimeMs"><line x1="58" y1="28" x2="58" y2="218" stroke="#9aa7b4" /><line x1="58" y1="218" x2="664" y2="218" stroke="#9aa7b4" /><text x="58" y="16" fill="#475467" font-size="12">Média wallTimeMs</text><rect x="76" y="65.35" width="54" height="152.65" rx="4" fill="#1264a3" /><text x="103.0" y="59.35" text-anchor="middle" fill="#263442" font-size="11">38.2072</text><text x="103.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=2</text><rect x="158" y="48.00" width="54" height="170.00" rx="4" fill="#1264a3" /><text x="185.0" y="42.00" text-anchor="middle" fill="#263442" font-size="11">42.5508</text><text x="185.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=4</text><rect x="240" y="62.02" width="54" height="155.98" rx="4" fill="#1264a3" /><text x="267.0" y="56.02" text-anchor="middle" fill="#263442" font-size="11">39.0424</text><text x="267.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=8</text><rect x="322" y="64.86" width="54" height="153.14" rx="4" fill="#1264a3" /><text x="349.0" y="58.86" text-anchor="middle" fill="#263442" font-size="11">38.3317</text><text x="349.0" y="236" text-anchor="middle" fill="#475467" font-size="10">one/file</text><rect x="404" y="108.73" width="54" height="109.27" rx="4" fill="#1264a3" /><text x="431.0" y="102.73" text-anchor="middle" fill="#263442" font-size="11">27.35</text><text x="431.0" y="236" text-anchor="middle" fill="#475467" font-size="10">sequencial</text><rect x="486" y="88.57" width="54" height="129.43" rx="4" fill="#1264a3" /><text x="513.0" y="82.57" text-anchor="middle" fill="#263442" font-size="11">32.3972</text><text x="513.0" y="236" text-anchor="middle" fill="#475467" font-size="10">single</text></svg></div>
+  </section>
+
+  <section>
+    <h2>Speedup por Estratégia</h2>
+    <div class="chart"><svg width="680" height="288" viewBox="0 0 680 288" role="img" aria-label="Speedup"><line x1="58" y1="28" x2="58" y2="218" stroke="#9aa7b4" /><line x1="58" y1="218" x2="664" y2="218" stroke="#9aa7b4" /><text x="58" y="16" fill="#475467" font-size="12">Speedup</text><rect x="76" y="96.31" width="54" height="121.69" rx="4" fill="#16845f" /><text x="103.0" y="90.31" text-anchor="middle" fill="#263442" font-size="11">0.7158</text><text x="103.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=2</text><rect x="158" y="108.73" width="54" height="109.27" rx="4" fill="#16845f" /><text x="185.0" y="102.73" text-anchor="middle" fill="#263442" font-size="11">0.6428</text><text x="185.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=4</text><rect x="240" y="98.91" width="54" height="119.09" rx="4" fill="#16845f" /><text x="267.0" y="92.91" text-anchor="middle" fill="#263442" font-size="11">0.7005</text><text x="267.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=8</text><rect x="322" y="96.70" width="54" height="121.30" rx="4" fill="#16845f" /><text x="349.0" y="90.70" text-anchor="middle" fill="#263442" font-size="11">0.7135</text><text x="349.0" y="236" text-anchor="middle" fill="#475467" font-size="10">one/file</text><rect x="404" y="48.00" width="54" height="170.00" rx="4" fill="#16845f" /><text x="431.0" y="42.00" text-anchor="middle" fill="#263442" font-size="11">1</text><text x="431.0" y="236" text-anchor="middle" fill="#475467" font-size="10">sequencial</text><rect x="486" y="74.48" width="54" height="143.52" rx="4" fill="#16845f" /><text x="513.0" y="68.48" text-anchor="middle" fill="#263442" font-size="11">0.8442</text><text x="513.0" y="236" text-anchor="middle" fill="#475467" font-size="10">single</text></svg></div>
+  </section>
+
+  <section>
+    <h2>CPU Média Aproximada</h2>
+    <div class="chart"><svg width="680" height="288" viewBox="0 0 680 288" role="img" aria-label="CPU média aproximada (%)"><line x1="58" y1="28" x2="58" y2="218" stroke="#9aa7b4" /><line x1="58" y1="218" x2="664" y2="218" stroke="#9aa7b4" /><text x="58" y="16" fill="#475467" font-size="12">CPU média aproximada (%)</text><rect x="76" y="140.83" width="54" height="77.17" rx="4" fill="#8a4fbd" /><text x="103.0" y="134.83" text-anchor="middle" fill="#263442" font-size="11">22.2346</text><text x="103.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=2</text><rect x="158" y="127.09" width="54" height="90.91" rx="4" fill="#8a4fbd" /><text x="185.0" y="121.09" text-anchor="middle" fill="#263442" font-size="11">26.1933</text><text x="185.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=4</text><rect x="240" y="110.60" width="54" height="107.40" rx="4" fill="#8a4fbd" /><text x="267.0" y="104.60" text-anchor="middle" fill="#263442" font-size="11">30.9437</text><text x="267.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=8</text><rect x="322" y="48.00" width="54" height="170.00" rx="4" fill="#8a4fbd" /><text x="349.0" y="42.00" text-anchor="middle" fill="#263442" font-size="11">48.982</text><text x="349.0" y="236" text-anchor="middle" fill="#475467" font-size="10">one/file</text><rect x="404" y="143.20" width="54" height="74.80" rx="4" fill="#8a4fbd" /><text x="431.0" y="137.20" text-anchor="middle" fill="#263442" font-size="11">21.5526</text><text x="431.0" y="236" text-anchor="middle" fill="#475467" font-size="10">sequencial</text><rect x="486" y="150.14" width="54" height="67.86" rx="4" fill="#8a4fbd" /><text x="513.0" y="144.14" text-anchor="middle" fill="#263442" font-size="11">19.5518</text><text x="513.0" y="236" text-anchor="middle" fill="#475467" font-size="10">single</text></svg></div>
+    
+  </section>
+
+  <section>
+    <h2>Variação por Nome</h2>
+    
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>nome_id</th><th>nome_sorteado</th><th>strategy</th><th>threads_per_file</th><th>quantidade_execucoes</th><th>media_wall_time_ms</th><th>menor_wall_time_ms</th><th>maior_wall_time_ms</th></tr></thead>
+        <tbody><tr><td>1</td><td>Aaron Graves</td><td>multiThreadPerFile</td><td>2</td><td>5</td><td>45.402</td><td>42.933</td><td>48.6159</td></tr><tr><td>1</td><td>Aaron Graves</td><td>multiThreadPerFile</td><td>4</td><td>5</td><td>44.9205</td><td>41.804</td><td>47.7542</td></tr><tr><td>1</td><td>Aaron Graves</td><td>multiThreadPerFile</td><td>8</td><td>5</td><td>43.5544</td><td>40.7966</td><td>48.89</td></tr><tr><td>1</td><td>Aaron Graves</td><td>oneThreadPerFile</td><td>0</td><td>5</td><td>41.3797</td><td>40.0553</td><td>44.3933</td></tr><tr><td>1</td><td>Aaron Graves</td><td>sequencial</td><td>0</td><td>5</td><td>34.6043</td><td>29.538</td><td>37.8423</td></tr><tr><td>1</td><td>Aaron Graves</td><td>singleThread</td><td>0</td><td>5</td><td>41.5682</td><td>36.9337</td><td>44.9848</td></tr><tr><td>2</td><td>Eric Gates MD</td><td>multiThreadPerFile</td><td>2</td><td>5</td><td>29.8518</td><td>27.4618</td><td>32.98</td></tr><tr><td>2</td><td>Eric Gates MD</td><td>multiThreadPerFile</td><td>4</td><td>5</td><td>29.0942</td><td>26.7827</td><td>30.1997</td></tr><tr><td>2</td><td>Eric Gates MD</td><td>multiThreadPerFile</td><td>8</td><td>5</td><td>29.7733</td><td>28.7701</td><td>30.7924</td></tr><tr><td>2</td><td>Eric Gates MD</td><td>oneThreadPerFile</td><td>0</td><td>5</td><td>40.5775</td><td>36.1049</td><td>42.7384</td></tr><tr><td>2</td><td>Eric Gates MD</td><td>sequencial</td><td>0</td><td>5</td><td>18.7777</td><td>16.9013</td><td>20.2392</td></tr><tr><td>2</td><td>Eric Gates MD</td><td>singleThread</td><td>0</td><td>5</td><td>21.3485</td><td>19.8942</td><td>23.085</td></tr><tr><td>3</td><td>Danielle Garner</td><td>multiThreadPerFile</td><td>2</td><td>5</td><td>41.4928</td><td>39.8403</td><td>44.6696</td></tr><tr><td>3</td><td>Danielle Garner</td><td>multiThreadPerFile</td><td>4</td><td>5</td><td>44.5839</td><td>39.864</td><td>47.9669</td></tr><tr><td>3</td><td>Danielle Garner</td><td>multiThreadPerFile</td><td>8</td><td>5</td><td>42.4059</td><td>39.5626</td><td>45.2472</td></tr><tr><td>3</td><td>Danielle Garner</td><td>oneThreadPerFile</td><td>0</td><td>5</td><td>22.6183</td><td>21.0975</td><td>23.5848</td></tr><tr><td>3</td><td>Danielle Garner</td><td>sequencial</td><td>0</td><td>5</td><td>31.0535</td><td>27.9904</td><td>34.7333</td></tr><tr><td>3</td><td>Danielle Garner</td><td>singleThread</td><td>0</td><td>5</td><td>37.3706</td><td>35.5642</td><td>38.2944</td></tr><tr><td>4</td><td>Russell Baxter</td><td>multiThreadPerFile</td><td>2</td><td>5</td><td>36.6411</td><td>33.331</td><td>39.8463</td></tr><tr><td>4</td><td>Russell Baxter</td><td>multiThreadPerFile</td><td>4</td><td>5</td><td>54.823</td><td>37.6661</td><td>106.6789</td></tr><tr><td>4</td><td>Russell Baxter</td><td>multiThreadPerFile</td><td>8</td><td>5</td><td>39.4253</td><td>35.1136</td><td>43.8532</td></tr><tr><td>4</td><td>Russell Baxter</td><td>oneThreadPerFile</td><td>0</td><td>5</td><td>44.0677</td><td>39.0469</td><td>50.0775</td></tr><tr><td>4</td><td>Russell Baxter</td><td>sequencial</td><td>0</td><td>5</td><td>26.4252</td><td>25.166</td><td>30.1179</td></tr><tr><td>4</td><td>Russell Baxter</td><td>singleThread</td><td>0</td><td>5</td><td>31.7521</td><td>30.266</td><td>33.7336</td></tr><tr><td>5</td><td>Kathryn Gould</td><td>multiThreadPerFile</td><td>2</td><td>5</td><td>37.648</td><td>35.8309</td><td>43.4784</td></tr><tr><td>5</td><td>Kathryn Gould</td><td>multiThreadPerFile</td><td>4</td><td>5</td><td>39.3324</td><td>35.8299</td><td>43.8308</td></tr><tr><td>5</td><td>Kathryn Gould</td><td>multiThreadPerFile</td><td>8</td><td>5</td><td>40.0532</td><td>36.655</td><td>44.4818</td></tr><tr><td>5</td><td>Kathryn Gould</td><td>oneThreadPerFile</td><td>0</td><td>5</td><td>43.0152</td><td>40.5641</td><td>47.449</td></tr><tr><td>5</td><td>Kathryn Gould</td><td>sequencial</td><td>0</td><td>5</td><td>25.8894</td><td>24.7245</td><td>27.0358</td></tr><tr><td>5</td><td>Kathryn Gould</td><td>singleThread</td><td>0</td><td>5</td><td>29.9466</td><td>28.2306</td><td>32.832</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Conclusão Automática</h2>
+    <div class="conclusion">Neste benchmark, a estratégia com menor tempo médio foi sequencial, com média de 27.35 ms. O maior Speedup observado foi 1 em relação à busca sequencial, usando sequencial. Pelo menos uma configuração paralela ficou mais lenta que a sequencial, o que indica overhead de criação, agendamento e coordenação de Threads. Estratégias com muitas Threads podem apresentar overhead, especialmente quando a busca termina rapidamente ou quando o volume de dados não é grande o suficiente.</div>
+  </section>
+</main>
+</body>
+</html>

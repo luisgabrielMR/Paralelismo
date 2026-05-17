@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Relatorio de Benchmark - Busca de Nomes</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --text: #1d2733;
+      --muted: #667085;
+      --line: #d9e0ea;
+      --accent: #1264a3;
+      --accent-2: #16845f;
+      --warn: #9a6700;
+      --shadow: 0 10px 30px rgba(31, 42, 55, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.5 Arial, Helvetica, sans-serif;
+    }
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+    header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 18px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+    }
+    .subtitle { color: var(--muted); margin: 0; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .card, section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    .card { padding: 16px; }
+    .card .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 6px;
+    }
+    .card .value {
+      font-size: 18px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+    section {
+      padding: 20px;
+      margin: 18px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #eef3f8;
+      font-weight: 700;
+      color: #263442;
+    }
+    tr.highlight-best td { background: #edf8f2; }
+    .table-wrap { overflow-x: auto; }
+    .chart {
+      width: 100%;
+      min-height: 280px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+      padding: 10px;
+    }
+    .note {
+      color: var(--warn);
+      background: #fff7dd;
+      border: 1px solid #f0d98c;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin: 10px 0 0;
+    }
+    .conclusion {
+      font-size: 16px;
+      background: #f8fbff;
+      border-left: 4px solid var(--accent);
+      padding: 14px 16px;
+      border-radius: 6px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #e8f2fb;
+      color: #0f5487;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Relatório de Benchmark - Busca de Nomes</h1>
+    <p class="subtitle">Comparação de estratégias sequenciais e paralelas usando os tempos medidos pelo Java.</p>
+  </header>
+
+  <div class="grid">
+    
+    <div class="card">
+      <div class="label">Máquina</div>
+      <div class="value">DESKTOP-D1CPDCT</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Dataset</div>
+      <div class="value">dataset_100x200k</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Data/hora</div>
+      <div class="value">2026-05-17T16:31:16</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Execuções esperadas</div>
+      <div class="value">150</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Execuções com sucesso</div>
+      <div class="value">150</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Execuções com erro</div>
+      <div class="value">0</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Melhor estratégia</div>
+      <div class="value">oneThreadPerFile (605.409 ms)</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Maior Speedup</div>
+      <div class="value">oneThreadPerFile (1.7939x)</div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Ambiente</h2>
+    
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Valor</th></tr></thead>
+        <tbody><tr><td>Versão do Java</td><td>25.0.3</td></tr><tr><td>Sistema operacional</td><td>Windows 10</td></tr><tr><td>Arquitetura</td><td>amd64</td></tr><tr><td>Processadores disponíveis</td><td>12</td></tr><tr><td>Máquina Java</td><td>DESKTOP-D1CPDCT</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Nomes Sorteados</h2>
+    
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>nome_id</th><th>nome sorteado</th><th>arquivo sorteado</th><th>linha sorteada</th></tr></thead>
+        <tbody><tr><td>1</td><td>Lucas Douglas Camargo Toledo</td><td>arq_78.txt</td><td>84128</td></tr><tr><td>2</td><td>Isabela Bianca Rezende Coelho</td><td>arq_55.txt</td><td>181357</td></tr><tr><td>3</td><td>Karina Fernanda Moreira Franco</td><td>arq_69.txt</td><td>87618</td></tr><tr><td>4</td><td>Olivia Flavia Figueiredo Monteiro</td><td>arq_97.txt</td><td>69488</td></tr><tr><td>5</td><td>Nicolas Jorge Rezende Souza</td><td>arq_90.txt</td><td>187204</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Médias Gerais</h2>
+    
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>strategy</th><th>threads_per_file</th><th>quantidade_execucoes</th><th>media_wall_time_ms</th><th>menor_wall_time_ms</th><th>maior_wall_time_ms</th><th>media_process_cpu_time_ms</th><th>media_cpu_usage_approx_percent</th><th>media_heap_delta_bytes</th></tr></thead>
+        <tbody><tr><td>multiThreadPerFile</td><td>2</td><td>25</td><td>1253.335</td><td>916.88</td><td>1579.0551</td><td>1895.625</td><td>12.7002</td><td>137764007.04</td></tr><tr><td>multiThreadPerFile</td><td>4</td><td>25</td><td>1289.9444</td><td>941.0335</td><td>1622.3067</td><td>2186.25</td><td>14.2833</td><td>156561339.2</td></tr><tr><td>multiThreadPerFile</td><td>8</td><td>25</td><td>1336.5713</td><td>980.1793</td><td>1658.8041</td><td>2816.875</td><td>17.8167</td><td>165708033.92</td></tr><tr class="highlight-best"><td>oneThreadPerFile</td><td>0</td><td>25</td><td>605.409</td><td>155.9439</td><td>2761.6965</td><td>6320.625</td><td>84.9052</td><td>161469642.24</td></tr><tr><td>sequencial</td><td>0</td><td>25</td><td>1086.0446</td><td>776.5841</td><td>1323.5303</td><td>1461.25</td><td>11.3041</td><td>121268782.72</td></tr><tr><td>singleThread</td><td>0</td><td>25</td><td>1106.0506</td><td>778.2584</td><td>1422.1723</td><td>1480.625</td><td>11.2316</td><td>124382374.4</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Speedup</h2>
+    
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>strategy</th><th>threads_per_file</th><th>media_wall_time_ms</th><th>tempo_base_sequencial_ms</th><th>speedup</th></tr></thead>
+        <tbody><tr><td>multiThreadPerFile</td><td>2</td><td>1253.335</td><td>1086.0446</td><td>0.8665</td></tr><tr><td>multiThreadPerFile</td><td>4</td><td>1289.9444</td><td>1086.0446</td><td>0.8419</td></tr><tr><td>multiThreadPerFile</td><td>8</td><td>1336.5713</td><td>1086.0446</td><td>0.8126</td></tr><tr class="highlight-best"><td>oneThreadPerFile</td><td>0</td><td>605.409</td><td>1086.0446</td><td>1.7939</td></tr><tr><td>sequencial</td><td>0</td><td>1086.0446</td><td>1086.0446</td><td>1</td></tr><tr><td>singleThread</td><td>0</td><td>1106.0506</td><td>1086.0446</td><td>0.9819</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Tempo Médio por Estratégia</h2>
+    <div class="chart"><svg width="680" height="288" viewBox="0 0 680 288" role="img" aria-label="Média wallTimeMs"><line x1="58" y1="28" x2="58" y2="218" stroke="#9aa7b4" /><line x1="58" y1="218" x2="664" y2="218" stroke="#9aa7b4" /><text x="58" y="16" fill="#475467" font-size="12">Média wallTimeMs</text><rect x="76" y="58.59" width="54" height="159.41" rx="4" fill="#1264a3" /><text x="103.0" y="52.59" text-anchor="middle" fill="#263442" font-size="11">1253.335</text><text x="103.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=2</text><rect x="158" y="53.93" width="54" height="164.07" rx="4" fill="#1264a3" /><text x="185.0" y="47.93" text-anchor="middle" fill="#263442" font-size="11">1289.9444</text><text x="185.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=4</text><rect x="240" y="48.00" width="54" height="170.00" rx="4" fill="#1264a3" /><text x="267.0" y="42.00" text-anchor="middle" fill="#263442" font-size="11">1336.5713</text><text x="267.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=8</text><rect x="322" y="141.00" width="54" height="77.00" rx="4" fill="#1264a3" /><text x="349.0" y="135.00" text-anchor="middle" fill="#263442" font-size="11">605.409</text><text x="349.0" y="236" text-anchor="middle" fill="#475467" font-size="10">one/file</text><rect x="404" y="79.86" width="54" height="138.14" rx="4" fill="#1264a3" /><text x="431.0" y="73.86" text-anchor="middle" fill="#263442" font-size="11">1086.0446</text><text x="431.0" y="236" text-anchor="middle" fill="#475467" font-size="10">sequencial</text><rect x="486" y="77.32" width="54" height="140.68" rx="4" fill="#1264a3" /><text x="513.0" y="71.32" text-anchor="middle" fill="#263442" font-size="11">1106.0506</text><text x="513.0" y="236" text-anchor="middle" fill="#475467" font-size="10">single</text></svg></div>
+  </section>
+
+  <section>
+    <h2>Speedup por Estratégia</h2>
+    <div class="chart"><svg width="680" height="288" viewBox="0 0 680 288" role="img" aria-label="Speedup"><line x1="58" y1="28" x2="58" y2="218" stroke="#9aa7b4" /><line x1="58" y1="218" x2="664" y2="218" stroke="#9aa7b4" /><text x="58" y="16" fill="#475467" font-size="12">Speedup</text><rect x="76" y="135.88" width="54" height="82.12" rx="4" fill="#16845f" /><text x="103.0" y="129.88" text-anchor="middle" fill="#263442" font-size="11">0.8665</text><text x="103.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=2</text><rect x="158" y="138.21" width="54" height="79.79" rx="4" fill="#16845f" /><text x="185.0" y="132.21" text-anchor="middle" fill="#263442" font-size="11">0.8419</text><text x="185.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=4</text><rect x="240" y="141.00" width="54" height="77.00" rx="4" fill="#16845f" /><text x="267.0" y="135.00" text-anchor="middle" fill="#263442" font-size="11">0.8126</text><text x="267.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=8</text><rect x="322" y="48.00" width="54" height="170.00" rx="4" fill="#16845f" /><text x="349.0" y="42.00" text-anchor="middle" fill="#263442" font-size="11">1.7939</text><text x="349.0" y="236" text-anchor="middle" fill="#475467" font-size="10">one/file</text><rect x="404" y="123.23" width="54" height="94.77" rx="4" fill="#16845f" /><text x="431.0" y="117.23" text-anchor="middle" fill="#263442" font-size="11">1</text><text x="431.0" y="236" text-anchor="middle" fill="#475467" font-size="10">sequencial</text><rect x="486" y="124.95" width="54" height="93.05" rx="4" fill="#16845f" /><text x="513.0" y="118.95" text-anchor="middle" fill="#263442" font-size="11">0.9819</text><text x="513.0" y="236" text-anchor="middle" fill="#475467" font-size="10">single</text></svg></div>
+  </section>
+
+  <section>
+    <h2>CPU Média Aproximada</h2>
+    <div class="chart"><svg width="680" height="288" viewBox="0 0 680 288" role="img" aria-label="CPU média aproximada (%)"><line x1="58" y1="28" x2="58" y2="218" stroke="#9aa7b4" /><line x1="58" y1="218" x2="664" y2="218" stroke="#9aa7b4" /><text x="58" y="16" fill="#475467" font-size="12">CPU média aproximada (%)</text><rect x="76" y="192.57" width="54" height="25.43" rx="4" fill="#8a4fbd" /><text x="103.0" y="186.57" text-anchor="middle" fill="#263442" font-size="11">12.7002</text><text x="103.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=2</text><rect x="158" y="189.40" width="54" height="28.60" rx="4" fill="#8a4fbd" /><text x="185.0" y="183.40" text-anchor="middle" fill="#263442" font-size="11">14.2833</text><text x="185.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=4</text><rect x="240" y="182.33" width="54" height="35.67" rx="4" fill="#8a4fbd" /><text x="267.0" y="176.33" text-anchor="middle" fill="#263442" font-size="11">17.8167</text><text x="267.0" y="236" text-anchor="middle" fill="#475467" font-size="10">multi N=8</text><rect x="322" y="48.00" width="54" height="170.00" rx="4" fill="#8a4fbd" /><text x="349.0" y="42.00" text-anchor="middle" fill="#263442" font-size="11">84.9052</text><text x="349.0" y="236" text-anchor="middle" fill="#475467" font-size="10">one/file</text><rect x="404" y="195.37" width="54" height="22.63" rx="4" fill="#8a4fbd" /><text x="431.0" y="189.37" text-anchor="middle" fill="#263442" font-size="11">11.3041</text><text x="431.0" y="236" text-anchor="middle" fill="#475467" font-size="10">sequencial</text><rect x="486" y="195.51" width="54" height="22.49" rx="4" fill="#8a4fbd" /><text x="513.0" y="189.51" text-anchor="middle" fill="#263442" font-size="11">11.2316</text><text x="513.0" y="236" text-anchor="middle" fill="#475467" font-size="10">single</text></svg></div>
+    
+  </section>
+
+  <section>
+    <h2>Variação por Nome</h2>
+    
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>nome_id</th><th>nome_sorteado</th><th>strategy</th><th>threads_per_file</th><th>quantidade_execucoes</th><th>media_wall_time_ms</th><th>menor_wall_time_ms</th><th>maior_wall_time_ms</th></tr></thead>
+        <tbody><tr><td>1</td><td>Lucas Douglas Camargo Toledo</td><td>multiThreadPerFile</td><td>2</td><td>5</td><td>1229.3489</td><td>1215.3933</td><td>1239.9646</td></tr><tr><td>1</td><td>Lucas Douglas Camargo Toledo</td><td>multiThreadPerFile</td><td>4</td><td>5</td><td>1280.2704</td><td>1239.3838</td><td>1311.7478</td></tr><tr><td>1</td><td>Lucas Douglas Camargo Toledo</td><td>multiThreadPerFile</td><td>8</td><td>5</td><td>1308.8567</td><td>1285.1545</td><td>1334.6873</td></tr><tr><td>1</td><td>Lucas Douglas Camargo Toledo</td><td>oneThreadPerFile</td><td>0</td><td>5</td><td>597.4773</td><td>464.3404</td><td>703.6308</td></tr><tr><td>1</td><td>Lucas Douglas Camargo Toledo</td><td>sequencial</td><td>0</td><td>5</td><td>1075.8207</td><td>1039.9033</td><td>1129.863</td></tr><tr><td>1</td><td>Lucas Douglas Camargo Toledo</td><td>singleThread</td><td>0</td><td>5</td><td>1152.909</td><td>1086.1967</td><td>1260.711</td></tr><tr><td>2</td><td>Isabela Bianca Rezende Coelho</td><td>multiThreadPerFile</td><td>2</td><td>5</td><td>935.7964</td><td>916.88</td><td>964.326</td></tr><tr><td>2</td><td>Isabela Bianca Rezende Coelho</td><td>multiThreadPerFile</td><td>4</td><td>5</td><td>955.1605</td><td>941.0335</td><td>970.199</td></tr><tr><td>2</td><td>Isabela Bianca Rezende Coelho</td><td>multiThreadPerFile</td><td>8</td><td>5</td><td>1016.4395</td><td>980.1793</td><td>1091.3167</td></tr><tr><td>2</td><td>Isabela Bianca Rezende Coelho</td><td>oneThreadPerFile</td><td>0</td><td>5</td><td>405.9144</td><td>157.0627</td><td>563.4919</td></tr><tr><td>2</td><td>Isabela Bianca Rezende Coelho</td><td>sequencial</td><td>0</td><td>5</td><td>780.7978</td><td>776.5841</td><td>790.7057</td></tr><tr><td>2</td><td>Isabela Bianca Rezende Coelho</td><td>singleThread</td><td>0</td><td>5</td><td>823.6496</td><td>778.2584</td><td>852.0293</td></tr><tr><td>3</td><td>Karina Fernanda Moreira Franco</td><td>multiThreadPerFile</td><td>2</td><td>5</td><td>1131.0066</td><td>1107.8218</td><td>1167.6484</td></tr><tr><td>3</td><td>Karina Fernanda Moreira Franco</td><td>multiThreadPerFile</td><td>4</td><td>5</td><td>1150.7053</td><td>1135.1333</td><td>1164.2365</td></tr><tr><td>3</td><td>Karina Fernanda Moreira Franco</td><td>multiThreadPerFile</td><td>8</td><td>5</td><td>1185.668</td><td>1149.5356</td><td>1241.0552</td></tr><tr><td>3</td><td>Karina Fernanda Moreira Franco</td><td>oneThreadPerFile</td><td>0</td><td>5</td><td>459.503</td><td>155.9439</td><td>739.3041</td></tr><tr><td>3</td><td>Karina Fernanda Moreira Franco</td><td>sequencial</td><td>0</td><td>5</td><td>1020.6798</td><td>966.9088</td><td>1127.7061</td></tr><tr><td>3</td><td>Karina Fernanda Moreira Franco</td><td>singleThread</td><td>0</td><td>5</td><td>968.5288</td><td>956.0163</td><td>986.9941</td></tr><tr><td>4</td><td>Olivia Flavia Figueiredo Monteiro</td><td>multiThreadPerFile</td><td>2</td><td>5</td><td>1527.032</td><td>1490.6026</td><td>1579.0551</td></tr><tr><td>4</td><td>Olivia Flavia Figueiredo Monteiro</td><td>multiThreadPerFile</td><td>4</td><td>5</td><td>1555.2517</td><td>1540.1106</td><td>1571.9813</td></tr><tr><td>4</td><td>Olivia Flavia Figueiredo Monteiro</td><td>multiThreadPerFile</td><td>8</td><td>5</td><td>1606.0879</td><td>1587.5117</td><td>1658.8041</td></tr><tr><td>4</td><td>Olivia Flavia Figueiredo Monteiro</td><td>oneThreadPerFile</td><td>0</td><td>5</td><td>517.8106</td><td>250.1239</td><td>698.7673</td></tr><tr><td>4</td><td>Olivia Flavia Figueiredo Monteiro</td><td>sequencial</td><td>0</td><td>5</td><td>1309.6083</td><td>1287.8997</td><td>1323.5303</td></tr><tr><td>4</td><td>Olivia Flavia Figueiredo Monteiro</td><td>singleThread</td><td>0</td><td>5</td><td>1332.8974</td><td>1283.0431</td><td>1422.1723</td></tr><tr><td>5</td><td>Nicolas Jorge Rezende Souza</td><td>multiThreadPerFile</td><td>2</td><td>5</td><td>1443.4908</td><td>1411.588</td><td>1518.4935</td></tr><tr><td>5</td><td>Nicolas Jorge Rezende Souza</td><td>multiThreadPerFile</td><td>4</td><td>5</td><td>1508.3341</td><td>1456.7162</td><td>1622.3067</td></tr><tr><td>5</td><td>Nicolas Jorge Rezende Souza</td><td>multiThreadPerFile</td><td>8</td><td>5</td><td>1565.8044</td><td>1522.6701</td><td>1604.9168</td></tr><tr><td>5</td><td>Nicolas Jorge Rezende Souza</td><td>oneThreadPerFile</td><td>0</td><td>5</td><td>1046.3395</td><td>530.4228</td><td>2761.6965</td></tr><tr><td>5</td><td>Nicolas Jorge Rezende Souza</td><td>sequencial</td><td>0</td><td>5</td><td>1243.3165</td><td>1229.4552</td><td>1259.1986</td></tr><tr><td>5</td><td>Nicolas Jorge Rezende Souza</td><td>singleThread</td><td>0</td><td>5</td><td>1252.2684</td><td>1231.075</td><td>1277.53</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Conclusão Automática</h2>
+    <div class="conclusion">Neste benchmark, a estratégia com menor tempo médio foi oneThreadPerFile, com média de 605.409 ms. O maior Speedup observado foi 1.7939 em relação à busca sequencial, usando oneThreadPerFile. Pelo menos uma configuração paralela ficou mais lenta que a sequencial, o que indica overhead de criação, agendamento e coordenação de Threads. Estratégias com muitas Threads podem apresentar overhead, especialmente quando a busca termina rapidamente ou quando o volume de dados não é grande o suficiente.</div>
+  </section>
+</main>
+</body>
+</html>
